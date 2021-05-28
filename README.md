@@ -1,2 +1,2 @@
-# Pygame-Project
+# Flappy Bird Game
 Flappy Bird Game
