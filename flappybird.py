@@ -2,14 +2,18 @@ import random
 import time
 
 import pygame
-
-from jainflapp import window, exit, clock, fps, right, front
-
 pygame.init()
 
-front = pygame.transform.scale(front,(screenwidth,screenheight+280))
-front_x = 0
-front_y = -70
+screenwidth = 960
+screenheight = 640
+
+window = pygame.display.set_mode((screenwidth,screenheight))
+
+exit = False
+clock = pygame.time.Clock()
+fps = 60
+right = False
+
 background = pygame.image.load('background.png')
 background = pygame.transform.scale(background,(screenwidth+100,screenheight))
 background_x = 0
@@ -64,9 +68,9 @@ isjump = False
 gravity = 15
 scored = 0
 def score(scored):
-    font = pygame.font.SysFont(None, 40)
+    font = pygame.font.SysFont(None, 25)
     text = font.render("Score:" + str(scored), True, (255,255,255))
-    window.blit(text, (10,screenheight/3))
+    window.blit(text, (10,screenheight/2))
 
 def text_objects(text, font):
     textsurface = font.render(text, True, (255,0,0))
@@ -86,7 +90,7 @@ def crash():
     message_display("COLLIDE")
     window.blit(bird, (bird_x, bird_y))
 
-while not exit:
+while not exit :
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             exit = True
@@ -101,7 +105,7 @@ while not exit:
     if right == True:
      if bird_relative_y+1 > bird_y > maximum_height:
         if isjump == True:
-            window.blit(bird, (bird_x, bird_y))
+            window.blit(bird,(bird_x,bird_y))
             bird_y -= 15
 
      else:
@@ -110,6 +114,7 @@ while not exit:
      if bird_y < bird_relative_y:
         if isjump == False:
                 bird_y += gravity
+
     window.blit(background, (background_x, background_y))
     if right == True:
        if background_x < -1060:
@@ -134,13 +139,13 @@ while not exit:
            pipe_rotate_x3 = 0
        if pipe_rotate_x4 < -960:
            pipe_rotate_x4 = 0
-       window.blit(background, (background_x + 1060, background_y))
-       window.blit(pipe, (pipe_x + 960, pipe_y))
-       window.blit(pipe2, (pipe_x2 + 960, pipe_y2))
-       window.blit(pipe3, (pipe_x3 + 960, pipe_y3))
-       window.blit(pipe4, (pipe_x4 + 960, pipe_y4))
+       window.blit(background ,(background_x+1060,background_y))
+       window.blit(pipe,(pipe_x+960,pipe_y))
+       window.blit(pipe2,(pipe_x2+960,pipe_y2))
+       window.blit(pipe3, (pipe_x3+960, pipe_y3))
+       window.blit(pipe4, (pipe_x4+960, pipe_y4))
        window.blit(pipe5, (pipe_x5 + 960, pipe_y5))
-       window.blit(pipe_rotate, (pipe_rotate_x + 960, pipe_rotate_y))
+       window.blit(pipe_rotate,(pipe_rotate_x+960,pipe_rotate_y))
        window.blit(pipe_rotate1, (pipe_rotate_x1 + 960, pipe_rotate_y1))
        window.blit(pipe_rotate2, (pipe_rotate_x2 + 960, pipe_rotate_y2))
        window.blit(pipe_rotate3, (pipe_rotate_x3 + 960, pipe_rotate_y3))
@@ -156,11 +161,7 @@ while not exit:
        pipe_rotate_x3 -= 10
        pipe_rotate_x4 -= 10
        background_x -= 10
-       score(scored)
-       window.blit(bird, (bird_x, bird_y))
-    elif right == False:
-        window.blit(front, (front_x, front_y))
-        time.sleep(1)
+
     if pipe_x+960 < bird_x+ 50 < pipe_x+960+50 and pipe_y < bird_y+50 < pipe_y+450:
        crash()
        exit = True
@@ -191,22 +192,25 @@ while not exit:
     elif pipe_rotate_x4+960 < bird_x+50 <pipe_rotate_x4+960+50 and pipe_rotate_y4 < bird_y+50 < pipe_rotate_y4+320 :
         crash()
         exit = True
-    elif bird_y+50 < 65:
+    elif bird_y + 50 < 65:
         crash()
         exit = True
-    elif bird_y+50 > 623:
+    elif bird_y + 50 > 623:
         crash()
         exit = True
-    if pipe_y > bird_y+50 > pipe_rotate_y + 340 and   pipe_x+960+50 > bird_x+50 > pipe_x+960+30:
+
+    if pipe_y > bird_y + 50 > pipe_rotate_y + 340 and pipe_x + 960 + 50 > bird_x + 50 > pipe_x + 960 + 30:
         scored += 1
-    elif pipe_y2 > bird_y+50 > pipe_rotate_y1 + 100 and   pipe_x2+960+50 > bird_x+50 > pipe_x2+960+30 :
+    elif pipe_y2 > bird_y + 50 > pipe_rotate_y1 + 100 and pipe_x2 + 960 + 50 > bird_x + 50 > pipe_x2 + 960 + 30:
         scored += 1
-    elif pipe_y3 > bird_y+50 > pipe_rotate_y2 + 150 and  pipe_x3+960+50 > bird_x+50 > pipe_x3+960+35:
+    elif pipe_y3 > bird_y + 50 > pipe_rotate_y2 + 150 and pipe_x3 + 960 + 50 > bird_x + 50 > pipe_x3 + 960 + 35:
         scored += 1
-    elif pipe_y4 > bird_y+50 > pipe_rotate_y3 + 120 and   pipe_x4+960+50 > bird_x+50 > pipe_x4+960+35:
+    elif pipe_y4 > bird_y + 50 > pipe_rotate_y3 + 120 and pipe_x4 + 960 + 50 > bird_x + 50 > pipe_x4 + 960 + 35:
         scored += 1
-    elif pipe_y5 > bird_y+50 > pipe_rotate_y4 + 320 and  pipe_x5+960+50 > bird_x+50 > pipe_x5+960+30:
+    elif pipe_y5 > bird_y + 50 > pipe_rotate_y4 + 320 and pipe_x5 + 960 + 50 > bird_x + 50 > pipe_x5 + 960 + 30:
         scored += 1
+    score(scored)
+    window.blit(bird, (bird_x, bird_y))
     pygame.display.update()
     clock.tick(fps)
 
